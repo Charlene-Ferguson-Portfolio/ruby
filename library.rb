@@ -23,7 +23,7 @@ class Library
 
   # book_ids list of book ids returned from search methods
   /
-* The Library class is the master class that communicates with other classes inside the library.rb file
+*
 * The Library class includes a singleton that ensures only one object is created.
 * The librarian (Library class) issues new library cards for new members, searches for books in the
 * library, allows members to borrow and return books.
@@ -31,6 +31,7 @@ class Library
 *
 *
 */
+
 
 
   def initialize
