@@ -1,43 +1,26 @@
 require 'singleton'
 
-/
-* The Library class is the master class that communicates with other classes inside the library.rb file
-* The Library class includes a singleton that ensures only one object is created.
-* The librarian (Library class) issues new library cards for new members, searches for books in the
-* library, allows members to borrow and return books.
-* The Librarian can also print out overdue books and can check if a member has any overdue books.
-*
-* @author Charlene Ferguson
-*/
+
+# The Library class is the master class that communicates with other classes inside the library.rb file
+# The Library class includes a singleton that ensures only one object is created.
+# The librarian (Library class) issues new library cards for new members, searches for books in the
+# library, allows members to borrow and return books.
+# The Librarian can also print out overdue books and can check if a member has any overdue books.
+# @author Charlene Ferguson
+#
 
 class Library
   include Singleton
 
   attr_accessor :calendar, :books_available, :my_array, :members, :serve, :open, :book_ids
 
-  # calendar object
-  # my_array an array that reads and stores the lines of text file
-  # books_available array that stores the book objects
-  # members dictionary and stores the members
-
-
-  # book_ids list of book ids returned from search methods
-  /
-*
-* The Library class includes a singleton that ensures only one object is created.
-* The librarian (Library class) issues new library cards for new members, searches for books in the
-* library, allows members to borrow and return books.
-* The Librarian can also print out overdue books and can check if a member has any overdue books.
-*
-*
-*/
-
-
-
+  # Creates a calendar object, fields, data structures and reads a file that contains
+  # book data.
   def initialize
     calendar = Calendar.instance
     @calendar = calendar
 
+    # my_array an array that reads and stores the lines of text file.
     my_array = IO.readlines('collections.txt')
     books_available = Array.new
     book_ids = Array.new
@@ -48,30 +31,32 @@ class Library
       books_available << Book.new(id, title, author)
     end
 
+    # members dictionary and stores the library members.
     @members = Hash.new
 
-
-    # open boolean that indicates whether the library is open or closed
+    # open boolean that indicates whether the library is open or closed.
     @open = false
 
-    # serve - tracks the current member being served
+    # serve - tracks the current member being served.
     @serve = nil
 
+    # books_available array that stores the book objects.
     @books_available = books_available
 
+    # book_ids list of book ids returned from search methods.
     @book_ids = book_ids
 
   end
 
+  # Opens the library.
   def open()
     raise 'The library is already open!' if @open
-
     @calendar.advance
     @open = true
     puts "Today is day #{calendar.get_date}"
-
   end
 
+  # Produces a list of all overdue books.
   def find_all_overdue_books
     raise 'The library is not open!' unless @open
     current_date = calendar.get_date
@@ -89,6 +74,7 @@ class Library
 
   end
 
+  # Issues a library card to members.
   def issue_card(name_of_member)
 
     raise 'The library is not open!' unless @open
@@ -116,10 +102,9 @@ class Library
     temp = members.fetch(name_of_member)
     @serve = temp
     puts " Now serving #{name_of_member}."
-
-
   end
 
+  # Find overdue books for the current member.
   def find_overdue_books
     raise 'The library is not open!' unless @open
     raise 'No member is currently being served' unless @serve
@@ -135,6 +120,7 @@ class Library
     end
   end
 
+  # Check in or return books.
   def check_in(*book_ids) # = 1..n book numbers
 
     raise 'The library is not open!' unless @open
@@ -203,6 +189,7 @@ class Library
 
   end
 
+  # Check out or borrow books.
   def check_out(*book_ids) # = 1..n book ids
 
     raise 'The library is not open!' unless @open
@@ -232,7 +219,6 @@ class Library
 
         end
 
-
         if count == 0
           puts "The library does not have book #{y}."
         else
@@ -245,7 +231,7 @@ class Library
 
   end
 
-
+  # Renew books.
   def renew(*book_ids)
     raise 'The library is not open!' unless @open
 
@@ -284,27 +270,28 @@ class Library
 
   end
 
+  # Close the library.
   def close
     raise 'The library is not open!' unless @open
     @open = false
     puts 'Good night'
   end
 
+  # The library is closed.
   def quit
-
     puts 'The library is now closed for renovations'
-
   end
 
 end
 
+# Calendar class used for dates
 class Calendar
   require 'date'
   include Singleton
   attr_accessor :date
 
-  def initialize()
 
+  def initialize()
     @date = 0
   end
 
@@ -315,7 +302,6 @@ class Calendar
   end
 
   #Increment the date (move ahead to the next day), and returns the new date.
-
   def advance()
     @date = @date + 1
   end
@@ -332,7 +318,10 @@ class Book
   attr_accessor :due_date
 
 #The constructor. Saves the provided information. When created, the book is not checked out.
+# @param [Object] id
+# @param [Object] title
 
+# @param [Object] author
   def
   initialize(id, title, author)
     @id = id
@@ -349,27 +338,23 @@ class Book
 
 #Returns this book's title.
 
-  def
-  get_title()
+  def get_title()
     @title
   end
 
 #Returns this book's author.
-  def
-  get_author()
+  def get_author()
     @author
   end
 
 #Returns the date that this book is due.
 
-  def
-  get_due_date()
+  def get_due_date()
     @due_date
   end
 
 #Sets the due date of this Book.
-  def
-  check_out(due_date)
+  def check_out(due_date)
 
     if @due_date == nil
       @due_date = 0
@@ -380,22 +365,19 @@ class Book
   end
 
 #Sets the due date of this Book to nil.
-  def
-  check_in()
+  def check_in()
     @due_date = nil
   end
 
 #Returns a string of the form "id: title, by author”.
-  def
-  to_s()
+  def to_s()
     "Book id: #{@id}, Title: #{@title}, By author:  #{@author}"
   end
 
 end
 
+# A member is a "customer" of the library.
 class Member
-
-  # A member is a "customer" of the library.
 
   attr_accessor :close, :books_out, :book, :notice, :library
 
@@ -403,8 +385,7 @@ class Member
   # Constructs a member with the given name, and no books.
   # The member must also have a reference to the Library object that he/she uses.
 
-  def
-  initialize(name, library)
+  def initialize(name, library)
     @name = name
     @library = library
     books_out = []
@@ -414,17 +395,14 @@ class Member
 
   #Returns this member's name.
 
-  def
-  get_name()
+  def get_name()
     @name
   end
 
   #Adds this Book object to the set of books checked out by this member.
   # A member must have a library card in order to check out books.
   # A member with a card may have no more than three books checked out at any time.
-  def
-  check_out(book)
-
+  def check_out(book)
     puts "#{self.get_name} does not have a library card" unless @library.members.member?(self.get_name)
 
     if @books_out.length < BOOK_LIMIT
