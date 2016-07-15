@@ -1,21 +1,42 @@
 require 'singleton'
 
+/
+* The Library class is the master class that communicates with other classes inside the library.rb file
+* The Library class includes a singleton that ensures only one object is created.
+* The librarian (Library class) issues new library cards for new members, searches for books in the
+* library, allows members to borrow and return books.
+* The Librarian can also print out overdue books and can check if a member has any overdue books.
+*
+* @author Charlene Ferguson
+*/
+
 class Library
   include Singleton
 
   attr_accessor :calendar, :books_available, :my_array, :members, :serve, :open, :book_ids
 
-  #calendar object
+  # calendar object
   # my_array an array that reads and stores the lines of text file
   # books_available array that stores the book objects
-  # members dictionary of members
-  # open boolean library open or closed
-  # serve - current member being served
-  # book_ids list of book ids returned from search method
+  # members dictionary and stores the members
+
+
+  # book_ids list of book ids returned from search methods
+  /
+* The Library class is the master class that communicates with other classes inside the library.rb file
+* The Library class includes a singleton that ensures only one object is created.
+* The librarian (Library class) issues new library cards for new members, searches for books in the
+* library, allows members to borrow and return books.
+* The Librarian can also print out overdue books and can check if a member has any overdue books.
+*
+*
+*/
+
 
   def initialize
     calendar = Calendar.instance
     @calendar = calendar
+
     my_array = IO.readlines('collections.txt')
     books_available = Array.new
     book_ids = Array.new
@@ -28,8 +49,11 @@ class Library
 
     @members = Hash.new
 
+
+    # open boolean that indicates whether the library is open or closed
     @open = false
 
+    # serve - tracks the current member being served
     @serve = nil
 
     @books_available = books_available
