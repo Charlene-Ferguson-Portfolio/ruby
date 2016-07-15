@@ -1,0 +1,33 @@
+
+require_relative 'library'
+
+
+
+lib = Library.instance
+
+result = lib.members.member?('Sam')
+
+result2 = lib.books_available.empty?
+
+puts result
+puts "result 2 is #{result2}"
+lib.open
+lib.issue_card 'Sam'
+lib.serve 'Sam'
+lib.search 'saga'
+lib.members.each { |value | puts value }
+lib.check_out(1)
+puts lib.books_available.each { |value| puts value}
+lib.find_all_overdue_books
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.calendar.advance
+lib.find_all_overdue_books
+lib.find_overdue_books
+lib.renew(1)
+lib.check_in(1)
