@@ -161,7 +161,7 @@ class Library
     end
   end
 
-
+  # Search for book providing a string.
   def search(string)
     raise 'The library is not open!' unless @open
     myStr = string
@@ -170,7 +170,6 @@ class Library
     unless myStr.length >= 4
       puts 'Search string must contain at least four characters'
     else
-
       books_available.each_with_index do |line, index|
         tempString = line.to_s
         if tempString =~ pattern
@@ -320,7 +319,6 @@ class Book
 #The constructor. Saves the provided information. When created, the book is not checked out.
 # @param [Object] id
 # @param [Object] title
-
 # @param [Object] author
   def
   initialize(id, title, author)
@@ -413,7 +411,6 @@ class Member
 
 
   #Removes this Book object from the set of books checked out by this member.
-  # (Since members are usually said to "return" books, this method should be called return !)
   def give_back(book)
     books_out.delete_if { |book| books_out.include?(book) }
 
@@ -427,7 +424,7 @@ class Member
 
 
   # Tells this member that he/she has overdue books.
-  # (What the method actually does is just print out this member's name along with the notice.)
+  # Print out this member's name along with the overdue notice.
   def send_overdue_notice(notice)
     p "Reminder #{get_name} #{notice}"
   end
