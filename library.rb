@@ -14,8 +14,8 @@ class Library
 
   attr_accessor :calendar, :books_available, :my_array, :members, :serve, :open, :book_ids
 
-  # Creates a calendar object, fields, data structures and reads a file that contains
-  # book data.
+  #
+  # Creates a calendar object. Reads a file that contains book data that is stored.
   def initialize
     calendar = Calendar.instance
     @calendar = calendar
@@ -31,10 +31,10 @@ class Library
       books_available << Book.new(id, title, author)
     end
 
-    # members dictionary and stores the library members.
+    # members dictionary that stores the library members.
     @members = Hash.new
 
-    # open boolean that indicates whether the library is open or closed.
+    # open boolean indicates whether the library is open or closed.
     @open = false
 
     # serve - tracks the current member being served.
@@ -56,7 +56,6 @@ class Library
     puts "Today is day #{calendar.get_date}"
   end
 
-  # Produces a list of all overdue books.
   def find_all_overdue_books
     raise 'The library is not open!' unless @open
     current_date = calendar.get_date
@@ -317,9 +316,9 @@ class Book
   attr_accessor :due_date
 
 #The constructor. Saves the provided information. When created, the book is not checked out.
-# @param [Object] id
-# @param [Object] title
-# @param [Object] author
+# @param id
+# @param title
+# @param author
   def
   initialize(id, title, author)
     @id = id
@@ -382,7 +381,8 @@ class Member
   BOOK_LIMIT = 3
   # Constructs a member with the given name, and no books.
   # The member must also have a reference to the Library object that he/she uses.
-
+  # @param name
+  # @param library
   def initialize(name, library)
     @name = name
     @library = library
@@ -400,6 +400,7 @@ class Member
   #Adds this Book object to the set of books checked out by this member.
   # A member must have a library card in order to check out books.
   # A member with a card may have no more than three books checked out at any time.
+  # @param book
   def check_out(book)
     puts "#{self.get_name} does not have a library card" unless @library.members.member?(self.get_name)
 
@@ -411,6 +412,7 @@ class Member
 
 
   #Removes this Book object from the set of books checked out by this member.
+  # @param book
   def give_back(book)
     books_out.delete_if { |book| books_out.include?(book) }
 
@@ -425,6 +427,7 @@ class Member
 
   # Tells this member that he/she has overdue books.
   # Print out this member's name along with the overdue notice.
+  # @param notice
   def send_overdue_notice(notice)
     p "Reminder #{get_name} #{notice}"
   end
